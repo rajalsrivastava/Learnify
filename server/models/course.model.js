@@ -8,6 +8,9 @@ const courseSchema = new mongoose.Schema({
     subTitle:{
         type:String
     },
+    description:{
+        type:String,
+    },
     category:{
         type:String,
         required:true
@@ -19,11 +22,20 @@ const courseSchema = new mongoose.Schema({
     coursePrice:{
         type:Number
     },
+    courseThumbnail:{
+        type:String
+    },
     enrolledStudents:[
         {
             type:mongoose.Schema.Types.ObjectId,
             ref:'User'
         },
+    ],
+    lectures:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Lecture'
+        }
     ],
     creator:{
         type:mongoose.Schema.Types.ObjectId,
