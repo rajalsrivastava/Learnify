@@ -26,55 +26,69 @@ export const courseApi = createApi({
       providesTags: ["Refetch_Creator_Course"],
     }),
     editCourse: builder.mutation({
-      query: ({formData, courseId}) => ({
+      query: ({ formData, courseId }) => ({
         url: `/${courseId}`,
         method: "PUT",
         body: formData,
       }),
-      invalidatesTags:["Refetch_Creator_Course"]
+      invalidatesTags: ["Refetch_Creator_Course"],
     }),
-    getCourseById:builder.query({
-      query:(courseId)=>({
-        url:`/${courseId}`,
-        method:"GET"
-      })
+    getCourseById: builder.query({
+      query: (courseId) => ({
+        url: `/${courseId}`,
+        method: "GET",
+      }),
     }),
-    createLecture:builder.mutation({
-      query:({lectureTitle,courseId})=>({
-        url:`/${courseId}/lecture`,
-        method:"POST",
-        body:{lectureTitle}
-      })
+    createLecture: builder.mutation({
+      query: ({ lectureTitle, courseId }) => ({
+        url: `/${courseId}/lecture`,
+        method: "POST",
+        body: { lectureTitle },
+      }),
     }),
-    getCourseLecture:builder.query({
-      query:(courseId)=>({
-        url:`/${courseId}/lecture`,
-        method:"GET"
+    getCourseLecture: builder.query({
+      query: (courseId) => ({
+        url: `/${courseId}/lecture`,
+        method: "GET",
       }),
       providesTags: ["Refetch_Lecture"],
     }),
 
-    editLecture:builder.mutation({
-      query:({lectureTitle,videoInfo,isPreviewFree,courseId,lectureId})=>({
-        url:`/${courseId}/lecture/${lectureId}`,
-        method:"POST",
-        body:{lectureTitle,videoInfo,isPreviewFree}
-      })
-    }),
-    removeLecture:builder.mutation({
-      query:(lectureId)=>({
-        url:`/lecture/${lectureId}`,
-        method:"DELETE",
+    editLecture: builder.mutation({
+      query: ({
+        lectureTitle,
+        videoInfo,
+        isPreviewFree,
+        courseId,
+        lectureId,
+      }) => ({
+        url: `/${courseId}/lecture/${lectureId}`,
+        method: "POST",
+        body: { lectureTitle, videoInfo, isPreviewFree },
       }),
-      invalidatesTags:["Refetch_Lecture"],
+    }),
+    removeLecture: builder.mutation({
+      query: (lectureId) => ({
+        url: `/lecture/${lectureId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Refetch_Lecture"],
     }),
 
-    getLectureById:builder.query({
-      query:(lectureId)=>({
-        url:`/lecture/${lectureId}`,
-        method:"GET",
-      })
-    })
+    getLectureById: builder.query({
+      query: (lectureId) => ({
+        url: `/lecture/${lectureId}`,
+        method: "GET",
+      }),
+    }),
+
+    publishCourse: builder.mutation({
+      query: ({ courseId,query }) => ({
+        url: `/${courseId}?publish=${query}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Refetch_Creator_Course"],
+    }),
   }),
 });
 
@@ -87,5 +101,6 @@ export const {
   useGetCourseLectureQuery,
   useEditLectureMutation,
   useRemoveLectureMutation,
-  useGetLectureByIdQuery
+  useGetLectureByIdQuery,
+  usePublishCourseMutation
 } = courseApi;
