@@ -1,11 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCreateLectureMutation } from "@/features/apis/courseApi";
+import {
+  useCreateLectureMutation,
+  useGetCourseLectureQuery,
+} from "@/features/apis/courseApi";
 import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import Lecture from "./Lecture";
 
 const CreateLecture = () => {
   const [lectureTitle, setLectureTitle] = useState("");
@@ -16,18 +20,28 @@ const CreateLecture = () => {
   const [createLecture, { data, isLoading, isSuccess, error }] =
     useCreateLectureMutation();
 
+  const {
+    data: lectureData,
+    isLoading: lectureLoading,
+    isError: lectureError,
+    refetch,
+  } = useGetCourseLectureQuery(courseId);
+
   const createLectureHandler = async () => {
     await createLecture({ lectureTitle, courseId });
   };
 
   useEffect(() => {
     if (isSuccess) {
+      refetch();
       toast.success(data.message);
     }
     if (error) {
       toast.error(error.data.message);
     }
   }, [isSuccess, error]);
+
+  console.log(lectureData);
 
   return (
     <div className="flex-1 mx-10">
@@ -67,6 +81,24 @@ const CreateLecture = () => {
               "Create lecture"
             )}
           </Button>
+        </div>
+        <div className="mt-10">
+          {lectureLoading ? (
+            <p>Loading lectures...</p>
+          ) : lectureError ? (
+            <p>Failed to load lectures.</p>
+          ) : lectureData.lectures.length === 0 ? (
+            <p>No lectures available</p>
+          ) : (
+            lectureData.lectures.map((lecture, index) => (
+              <Lecture
+                key={lecture.id}
+                lecture={lecture}
+                courseId={courseId}
+                index={index}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
