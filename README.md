@@ -79,3 +79,16 @@ JWT_SECRET=your_jwt_secret
 ```bash
 npm run dev
 ```
+
+---
+
+## 📜 License
+This project is licensed under the MIT License.
+
+---
+
+## 🙌 Contributing
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+---
+
